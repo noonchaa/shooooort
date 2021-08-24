@@ -48,11 +48,13 @@ const History = () => {
                 </h1>
             </div>
             
+            <div>
             {history.map((item,index)=>(
-            <div className='first:border-l-4 border-red-600 -ml-4 pl-2' key={index}>
+            <div className='first:border-l-4 border-red-600 -ml-4 pl-3' key={index}>
                 <ListHistory id={item.id} short={item.short} origin={item.origin} visits={item.visits}/>
             </div>
             ))}
+            </div>
 
         </div>
     )
