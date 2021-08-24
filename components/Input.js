@@ -1,7 +1,9 @@
 import { useState } from "react"
+import firebase from '../utils/firebaseClient'
 
 const Input = () => {
     const [url,setUrl] = useState('')
+    const db = firebase.firestore().collection('shooooort')
 
     const getShort = async () => {
         const res = await fetch('/api/short',{
@@ -10,7 +12,13 @@ const Input = () => {
                 url:url
             })
         }).then(respon => respon.text())
-        console.log(await JSON.parse(res).shortcode)
+        db.doc(url.replace(/[&\/\\#, +()$~%.'"*?<>{}]/g, '_')).set({
+            id: url.replace(/[&\/\\#, +()$~%.'"*?<>{}]/g, '_'),
+            time: firebase.firestore.FieldValue.serverTimestamp(),
+            origin: url,
+            visits:[],
+            short: await JSON.parse(res).shortcode
+        })
         setUrl('')
     }
 

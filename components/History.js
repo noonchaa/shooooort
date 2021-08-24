@@ -1,24 +1,29 @@
+import ListHistory from "./ListHistory"
+import firebase from '../utils/firebaseClient'
+import { useEffect, useState } from "react"
+
 const History = () => {
-    const ListUrl = [
-        {
-            id: 'fhfys',
-            short: 'hygeos',
-            origin: 'https://example.com',
-            total:[new Date(),new Date(),new Date()]
-        },
-        {
-            id: 'fhfys',
-            short: 'hygeos',
-            origin: 'https://example.com',
-            total:[new Date(),new Date(),new Date()]
-        },
-        {
-            id: 'fhfys',
-            short: 'hygeos',
-            origin: 'https://example.com',
-            total:[new Date(),new Date(),new Date()]
-        },
-    ]
+    const [history,setHistory] = useState([])
+
+    useEffect(()=>{
+        firebase.firestore().collection('shooooort').orderBy('time','asc')
+        .onSnapshot((item)=>{
+            let data = []
+            item.forEach((doc)=>{
+                data.unshift(doc.data())
+            })
+            setHistory(data)
+        })
+        return()=>{
+            setHistory([])
+        }
+    },[])
+
+    const delHistory = () => {
+        history.map((item)=>{
+            firebase.firestore().collection('shooooort').doc(item.id).delete().then(()=>console.log('deleted!')).catch((err)=>console.log('error',err))
+        })
+    }
 
     return(
         <div>
@@ -26,7 +31,7 @@ const History = () => {
                 <h1 className='text-xl md:mr-8'>
                     Previously shortened by you
                 </h1>
-                <p className='text-base text-red-600 md:self-center cursor-pointer'>
+                <p className='text-base text-red-600 md:self-center cursor-pointer' onClick={()=>delHistory()}>
                     Clear history
                 </p>
             </div>
@@ -43,31 +48,9 @@ const History = () => {
                 </h1>
             </div>
             
-            {ListUrl.map((item,index)=>(
+            {history.map((item,index)=>(
             <div className='first:border-l-4 border-red-600 -ml-4 pl-2' key={index}>
-                <div className='flex flex-row mb-2 flex-nowrap group' onClick={()=> navigator.clipboard.writeText('https://shooooort/'+item.short)}>
-                    <div className='w-3/6 md:w-4/6 cursor-pointer'>
-                        <h1 className='text-gray-900'>
-                            shooooort/
-                            <span className='text-red-600'>
-                                {item.short}
-                            </span>
-                            <span className='text-white hidden md:inline-block ml-8 group-hover:text-red-500'>
-                                Click to copy this link
-                            </span>
-                        </h1>
-                        <h1 className='text-sm text-gray-400 overflow-hidden'>
-                            {item.origin}
-                        </h1>
-                    </div>
-                    <h1 className='w-1/6 text-gray-900 text-center self-center'>
-                        {item.total.length}
-                    </h1>
-                    <h1 className='w-2/6 md:w-1/6 text-center self-center'>
-                    8 minutes ago
-                    </h1>
-                </div>
-
+                <ListHistory id={item.id} short={item.short} origin={item.origin} visits={item.visits}/>
             </div>
             ))}
 
