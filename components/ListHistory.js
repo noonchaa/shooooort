@@ -32,7 +32,7 @@ const ListHistory = ({short,origin,visits,id}) => {
     }
 
     return(
-        <div className='flex flex-row mb-2 flex-nowrap group' onClick={()=> {
+        <div className='flex flex-row mb-2 flex-nowrap group hover:bg-gray-100' onClick={()=> {
             navigator.clipboard.writeText('https://shooooort/'+short)
             updateVisit()
             }}>
