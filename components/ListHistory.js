@@ -33,7 +33,7 @@ const ListHistory = ({short,origin,visits,id}) => {
 
     return(
         <div className='flex flex-row mb-2 flex-nowrap group hover:bg-gray-100' onClick={()=> {
-            navigator.clipboard.writeText('https://shooooort/'+short)
+            navigator.clipboard.writeText('https://shooooort.vercel.app/'+short)
             updateVisit()
             }}>
             <div className='w-3/6 md:w-4/6 cursor-pointer'>
