@@ -10,7 +10,7 @@ const Short = () => {
             data.forEach((doc)=>{
                 setTimeout(()=>{
                     router.push(doc.data().origin)
-                },5000)
+                },3000)
             })
         })
     },[router])
@@ -23,8 +23,8 @@ const Short = () => {
             </div>
             </header>
             <main>
-                <h1 className='text-center text-2xl text-red-600 font-semibold mb-8'>Redirecting to original url</h1>
-                <h1 className='text-center text-2xl text-red-600 font-semibold mb-8'>Please wait</h1>
+                <h1 className='text-center text-2xl text-red-600 font-semibold mb-8 animate-pulse'>Redirecting to original url</h1>
+                <h1 className='text-center text-2xl text-red-600 font-semibold mb-8 animate-pulse'>Please wait</h1>
             </main>
         </div>
     )
