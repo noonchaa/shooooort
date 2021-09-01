@@ -3,9 +3,11 @@ import firebase from '../utils/firebaseClient'
 
 const Input = () => {
     const [url,setUrl] = useState('')
+    const [loading, setLoading] = useState(false)
     const db = firebase.firestore().collection('shooooort')
 
     const getShort = async () => {
+        setLoading(true)
         const res = await fetch('/api/short',{
             method:'POST',
             body: JSON.stringify({
@@ -20,6 +22,7 @@ const Input = () => {
             short: await JSON.parse(res).shortcode
         })
         setUrl('')
+        setLoading(false)
     }
 
     return(
@@ -38,7 +41,7 @@ const Input = () => {
             }}
             className={url.slice(0,8)!='https://'?'py-2 px-3 rounded-md bg-gray-300 text-gray-500 flex-none mb-2':'py-2 px-3 text-gray-50 rounded-md bg-red-600 flex-none mb-2'}
             >
-            Shorten this link
+            {loading==false?'Shorten this link':'Processing'}
             </button>
         </div>
     )

@@ -11,7 +11,8 @@ module.exports = {
   },
   variants: {
     extend: {
-      borderWidth : ['first']
+      borderWidth : ['first'],
+      padding : ['first']
     },
   },
   plugins: [],
